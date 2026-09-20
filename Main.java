@@ -1,0 +1,74 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    static class Student {
+        String name;
+        double grade;
+        Student(String name, double grade) {
+            this.name = name;
+            this.grade = grade;
+        }
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final List<Student> students = new ArrayList<>();
+
+    public static void main(String[] args) {
+        System.out.println("STUDENT GRADE TRACKER - CodeAlpha");
+        boolean running = true;
+        while (running) {
+            System.out.println("\n1. Add Student\n2. View All\n3. Summary Report\n4. Delete Student\n5. Exit");
+            System.out.print("Enter choice: ");
+            int choice = readInt();
+            switch (choice) {
+                case 1 -> addStudent();
+                case 2 -> viewAllStudents();
+                case 3 -> showSummaryReport();
+                case 4 -> deleteStudent();
+                case 5 -> { System.out.println("Goodbye!"); running = false; }
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine().trim();
+        System.out.print("Enter grade (0-100): ");
+        double grade = Double.parseDouble(scanner.nextLine().trim());
+        students.add(new Student(name, grade));
+        System.out.println("Added!");
+    }
+
+    private static void viewAllStudents() {
+        if (students.isEmpty()) { System.out.println("No students yet."); return; }
+        for (Student s : students) System.out.println(s.name + " - " + s.grade);
+    }
+
+    private static void showSummaryReport() {
+        if (students.isEmpty()) { System.out.println("No students yet."); return; }
+        double sum = 0;
+        Student high = students.get(0), low = students.get(0);
+        for (Student s : students) {
+            sum += s.grade;
+            if (s.grade > high.grade) high = s;
+            if (s.grade < low.grade) low = s;
+        }
+        System.out.println("Average: " + (sum / students.size()));
+        System.out.println("Highest: " + high.name + " - " + high.grade);
+        System.out.println("Lowest: " + low.name + " - " + low.grade);
+    }
+
+    private static void deleteStudent() {
+        viewAllStudents();
+        System.out.print("Enter record number to delete: ");
+        int idx = readInt();
+        if (idx >= 1 && idx <= students.size()) students.remove(idx - 1);
+    }
+
+    private static int readInt() {
+        return Integer.parseInt(scanner.nextLine().trim());
+    }
+}
