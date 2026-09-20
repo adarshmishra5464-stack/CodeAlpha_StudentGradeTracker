@@ -1,0 +1,1 @@
+- [Java runtime](java-runtime.md) — use the supported GraalVM-based Java toolchain for console app compilation.
